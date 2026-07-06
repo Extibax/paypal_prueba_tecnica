@@ -1,0 +1,32 @@
+@model IEnumerable<PayrollPma.Models.Employee>
+@{
+    ViewData["Title"] = "Empleados";
+}
+
+<h2>Empleados</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Crear empleado</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Rata/Hora</th>
+            <th>Horas/Mes</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var emp in Model)
+        {
+            <tr>
+                <td>@emp.Nombre</td>
+                <td>@emp.Apellido</td>
+                <td>@emp.RatePerHour.ToString("F2")</td>
+                <td>@emp.MonthlyHours</td>
+            </tr>
+        }
+    </tbody>
+</table>

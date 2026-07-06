@@ -1,0 +1,37 @@
+@model PayrollPma.Models.Employee
+@{
+    ViewData["Title"] = "Crear Empleado";
+}
+
+<h2>Crear Empleado</h2>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Nombre" class="form-label"></label>
+        <input asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Apellido" class="form-label"></label>
+        <input asp-for="Apellido" class="form-control" />
+        <span asp-validation-for="Apellido" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="RatePerHour" class="form-label"></label>
+        <input asp-for="RatePerHour" class="form-control" />
+        <span asp-validation-for="RatePerHour" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="MonthlyHours" class="form-label"></label>
+        <input asp-for="MonthlyHours" class="form-control" />
+        <span asp-validation-for="MonthlyHours" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
