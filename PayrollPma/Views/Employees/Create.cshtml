@@ -8,7 +8,14 @@
         <h5 class="card-title mb-4">Nuevo empleado</h5>
 
         <form asp-action="Create" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Revisa los siguientes campos:</strong>
+            <div asp-validation-summary="All" class="mb-0"></div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+    }
 
             <div class="row mb-3">
                 <div class="col-md-6">
