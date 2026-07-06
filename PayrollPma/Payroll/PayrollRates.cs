@@ -1,22 +1,35 @@
+using Microsoft.Extensions.Configuration;
+
 namespace PayrollPma.Payroll;
 
 /// <summary>
-/// Tasas de planilla de Panama (valores referenciales).
-/// CSS empleado: 9.75%, CSS patrono: 12.25% (solo el empleado cuenta para deducción).
-/// Seguro Educativo: 1.25% empleado.
-/// ISR: progresivo por tramos anuales.
+/// Tasas de planilla leídas desde appsettings.json (sección "PayrollRates").
+/// Para cambiar las tasas, editar el archivo de configuración sin tocar código.
 /// </summary>
 public sealed class PayrollRates : IPayrollRates
 {
-    public decimal SocialSecurityRate => 0.0975m;
-    public decimal EducationalInsuranceRate => 0.0125m;
+    public decimal SocialSecurityRate { get; }
+    public decimal EducationalInsuranceRate { get; }
+    public IReadOnlyList<TaxBracket> IncomeTaxBrackets { get; }
+    public bool IncomeTaxIsProgressive { get; }
 
-    public IReadOnlyList<TaxBracket> IncomeTaxBrackets =>
-    [
-        new(0, 11_000m, 0m),
-        new(11_000m, 50_000m, 0.15m),
-        new(50_000m, int.MaxValue, 0.25m),
-    ];
-
-    public bool IncomeTaxIsProgressive => true;
+    public PayrollRates(IConfiguration configuration)
+    {
+        var section = configuration.GetSection("PayrollRates");
+        
+        SocialSecurityRate = section.GetValue<decimal>(nameof(SocialSecurityRate));
+        EducationalInsuranceRate = section.GetValue<decimal>(nameof(EducationalInsuranceRate));
+        IncomeTaxIsProgressive = section.GetValue<bool>(nameof(IncomeTaxIsProgressive));
+        
+        var brackets = new List<TaxBracket>();
+        var bracketsSection = section.GetSection("IncomeTaxBrackets");
+        foreach (var bracket in bracketsSection.GetChildren())
+        {
+            var lower = bracket.GetValue<decimal>(nameof(TaxBracket.LowerLimit));
+            var upper = bracket.GetValue<decimal>(nameof(TaxBracket.UpperLimit));
+            var rate = bracket.GetValue<decimal>(nameof(TaxBracket.Rate));
+            brackets.Add(new TaxBracket(lower, upper, rate));
+        }
+        IncomeTaxBrackets = brackets;
+    }
 }
