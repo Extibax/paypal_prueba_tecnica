@@ -1,0 +1,31 @@
+@model PayrollPma.Models.Employee
+@{
+    ViewData["Title"] = "Eliminar Empleado";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Eliminar Empleado</h2>
+    <a asp-action="Index" class="btn btn-secondary">Volver a lista</a>
+</div>
+
+<div class="alert alert-danger" role="alert">
+    <h4 class="alert-heading">¿Estás seguro?</h4>
+    <p>Esta acción no se puede deshacer. Se eliminará permanentemente el empleado:</p>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Nombre @Model.Apellido</h5>
+        <p class="card-text">
+            <strong>Rata por hora:</strong> $@Model.RatePerHour.ToString("N2")<br />
+            <strong>Horas mensuales:</strong> @Model.MonthlyHours
+        </p>
+    </div>
+</div>
+
+<form asp-action="Delete" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

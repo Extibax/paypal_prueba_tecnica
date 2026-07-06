@@ -42,7 +42,9 @@ else
                     <td class="text-end">@emp.RatePerHour.ToString("N2")</td>
                     <td class="text-end">@emp.MonthlyHours</td>
                     <td class="text-center">
+                        <a asp-action="Edit" asp-route-id="@emp.Id" class="btn btn-sm btn-warning">Editar</a>
                         <a asp-action="Details" asp-route-id="@emp.Id" class="btn btn-sm btn-info">Ver cálculos</a>
+                        <a asp-action="Delete" asp-route-id="@emp.Id" class="btn btn-sm btn-danger">Eliminar</a>
                     </td>
                 </tr>
             }

@@ -45,6 +45,47 @@ public class EmployeesController : Controller
         return View(employee);
     }
 
+    public async Task<IActionResult> Edit(int? id)
+    {
+        if (id == null) return NotFound();
+        var employee = await _db.Employees.FindAsync(id);
+        if (employee == null) return NotFound();
+        return View(employee);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, Employee employee)
+    {
+        if (id != employee.Id) return NotFound();
+        if (!ModelState.IsValid) return View(employee);
+        
+        _db.Update(employee);
+        await _db.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
+    }
+
+    public async Task<IActionResult> Delete(int? id)
+    {
+        if (id == null) return NotFound();
+        var employee = await _db.Employees.FindAsync(id);
+        if (employee == null) return NotFound();
+        return View(employee);
+    }
+
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var employee = await _db.Employees.FindAsync(id);
+        if (employee != null)
+        {
+            _db.Employees.Remove(employee);
+            await _db.SaveChangesAsync();
+        }
+        return RedirectToAction(nameof(Index));
+    }
+
     public IActionResult ExportPdf()
     {
         var employees = _db.Employees.ToList();
