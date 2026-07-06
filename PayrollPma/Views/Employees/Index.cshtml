@@ -3,30 +3,45 @@
     ViewData["Title"] = "Empleados";
 }
 
-<h2>Empleados</h2>
-
-<p>
-    <a asp-action="Create" class="btn btn-primary">Crear empleado</a>
-</p>
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Rata/Hora</th>
-            <th>Horas/Mes</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var emp in Model)
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Empleados <span class="badge bg-secondary">@Model.Count()</span></h2>
+    <div>
+        @if (Model.Any())
         {
-            <tr>
-                <td>@emp.Nombre</td>
-                <td>@emp.Apellido</td>
-                <td>@emp.RatePerHour.ToString("F2")</td>
-                <td>@emp.MonthlyHours</td>
-            </tr>
+            <a asp-action="ExportPdf" class="btn btn-outline-danger me-2">Exportar PDF</a>
         }
-    </tbody>
-</table>
+        <a asp-action="Create" class="btn btn-primary">Crear empleado</a>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        <p>No hay empleados registrados.</p>
+        <a asp-action="Create" class="btn btn-primary">Crear el primero</a>
+    </div>
+}
+else
+{
+    <table class="table table-hover table-bordered payroll-table">
+        <thead class="table-light">
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th class="text-end">Rata por hora</th>
+                <th class="text-end">Horas mensuales</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var emp in Model)
+            {
+                <tr>
+                    <td>@emp.Nombre</td>
+                    <td>@emp.Apellido</td>
+                    <td class="text-end">@emp.RatePerHour.ToString("N2")</td>
+                    <td class="text-end">@emp.MonthlyHours</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
