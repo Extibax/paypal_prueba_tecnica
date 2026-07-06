@@ -24,3 +24,12 @@ body {
 .payroll-table th { background-color: #f8f9fa; }
 .empty-state { padding: 2rem; text-align: center; color: #6c757d; }
 .card-create { max-width: 640px; margin: 2rem auto; }
+.field-validation-error {
+  color: #dc3545; font-size: 0.85rem; font-weight: 500;
+  display: inline-block; margin-top: 0.25rem;
+}
+.form-control.input-validation-error {
+  border-color: #dc3545;
+}
+.action-buttons { display: flex; gap: 0.4rem; justify-content: center; align-items: center; }
+.action-buttons .btn { padding: 0.25rem 0.5rem; line-height: 1; }
