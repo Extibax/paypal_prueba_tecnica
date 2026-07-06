@@ -20,3 +20,7 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.payroll-table th { background-color: #f8f9fa; }
+.empty-state { padding: 2rem; text-align: center; color: #6c757d; }
+.card-create { max-width: 640px; margin: 2rem auto; }
