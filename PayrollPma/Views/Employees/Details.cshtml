@@ -1,0 +1,63 @@
+@model PayrollPma.Models.Employee
+@{
+    ViewData["Title"] = "Detalles de Nómina";
+    var payroll = (PayrollPma.Payroll.PayrollResult)ViewBag.Payroll;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Nómina de @Model.Nombre @Model.Apellido</h2>
+    <a asp-action="Index" class="btn btn-secondary">Volver a lista</a>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header"><strong>Datos del Empleado</strong></div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Nombre:</strong> @Model.Nombre</p>
+                <p><strong>Apellido:</strong> @Model.Apellido</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Rata por hora:</strong> $@Model.RatePerHour.ToString("N2")</p>
+                <p><strong>Horas mensuales:</strong> @Model.MonthlyHours</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header"><strong>Cálculo de Nómina</strong></div>
+    <div class="card-body">
+        <table class="table table-borderless">
+            <tbody>
+                <tr>
+                    <td>Salario Bruto</td>
+                    <td class="text-end fw-bold">$@payroll.Gross.ToString("N2")</td>
+                </tr>
+                <tr class="text-danger">
+                    <td>(-) Seguro Social (IMPUESTO1)</td>
+                    <td class="text-end">$@payroll.SocialSecurity.ToString("N2")</td>
+                </tr>
+                <tr class="text-danger">
+                    <td>(-) Seguro Educativo (IMPUESTO2)</td>
+                    <td class="text-end">$@payroll.EducationalInsurance.ToString("N2")</td>
+                </tr>
+                <tr class="text-danger">
+                    <td>(-) Impuesto sobre la Renta (IMPUESTO3)</td>
+                    <td class="text-end">$@payroll.IncomeTax.ToString("N2")</td>
+                </tr>
+                <tr class="table-success fw-bold">
+                    <td>Salario Neto</td>
+                    <td class="text-end fs-5">$@payroll.Net.ToString("N2")</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="alert alert-info" role="alert">
+    <strong>Nota:</strong> Los cálculos se realizan con las tasas de impuestos configuradas en el sistema.
+    Para actualizar las tasas, modificar <code>PayrollPma/Payroll/PayrollRates.cs</code>.
+</div>
+
+<a asp-action="Index" class="btn btn-secondary">Volver a lista</a>

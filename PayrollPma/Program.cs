@@ -15,6 +15,22 @@ QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 
 var app = builder.Build();
 
+// Seed mock data para demostración
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<PayrollPma.Data.PayrollDbContext>();
+    db.Database.EnsureCreated();
+    if (!db.Employees.Any())
+    {
+        db.Employees.AddRange(
+            new PayrollPma.Models.Employee { Nombre = "Juan", Apellido = "Bedoya", RatePerHour = 10m, MonthlyHours = 160 },
+            new PayrollPma.Models.Employee { Nombre = "María", Apellido = "López", RatePerHour = 15m, MonthlyHours = 120 },
+            new PayrollPma.Models.Employee { Nombre = "Carlos", Apellido = "Ruiz", RatePerHour = 25m, MonthlyHours = 80 }
+        );
+        db.SaveChanges();
+    }
+}
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

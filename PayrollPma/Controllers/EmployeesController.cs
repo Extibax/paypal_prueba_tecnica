@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PayrollPma.Data;
 using PayrollPma.Models;
+using PayrollPma.Payroll;
 using PayrollPma.Services;
 
 namespace PayrollPma.Controllers;
@@ -10,11 +11,13 @@ public class EmployeesController : Controller
 {
     private readonly PayrollDbContext _db;
     private readonly PdfReportService _pdf;
+    private readonly IPayrollCalculator _calculator;
 
-    public EmployeesController(PayrollDbContext db, PdfReportService pdf)
+    public EmployeesController(PayrollDbContext db, PdfReportService pdf, IPayrollCalculator calculator)
     {
         _db = db;
         _pdf = pdf;
+        _calculator = calculator;
     }
 
     public async Task<IActionResult> Index() =>
@@ -30,6 +33,16 @@ public class EmployeesController : Controller
         _db.Employees.Add(employee);
         await _db.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
+    }
+
+    public async Task<IActionResult> Details(int? id)
+    {
+        if (id == null) return NotFound();
+        var employee = await _db.Employees.FindAsync(id);
+        if (employee == null) return NotFound();
+        var result = _calculator.Calculate(employee);
+        ViewBag.Payroll = result;
+        return View(employee);
     }
 
     public IActionResult ExportPdf()
