@@ -1,6 +1,6 @@
 *.md
 bin/
 obj/
-*.db
+*.db*
 appsettings.Development.json
 .vs/
