@@ -18,7 +18,7 @@
                 <p><strong>Apellido:</strong> @Model.Apellido</p>
             </div>
             <div class="col-md-6">
-                <p><strong>Rata por hora:</strong> $@Model.RatePerHour.ToString("N2")</p>
+                <p><strong>Rata por hora:</strong> $@Model.RatePerHour.ToString("N6")</p>
                 <p><strong>Horas mensuales:</strong> @Model.MonthlyHours</p>
             </div>
         </div>
@@ -32,23 +32,23 @@
             <tbody>
                 <tr>
                     <td>Salario Bruto</td>
-                    <td class="text-end fw-bold">$@payroll.Gross.ToString("N2")</td>
+                    <td class="text-end fw-bold">$@payroll.Gross.ToString("N6")</td>
                 </tr>
                 <tr class="text-danger">
                     <td>(-) Seguro Social (IMPUESTO1)</td>
-                    <td class="text-end">$@payroll.SocialSecurity.ToString("N2")</td>
+                    <td class="text-end">$@payroll.SocialSecurity.ToString("N6")</td>
                 </tr>
                 <tr class="text-danger">
                     <td>(-) Seguro Educativo (IMPUESTO2)</td>
-                    <td class="text-end">$@payroll.EducationalInsurance.ToString("N2")</td>
+                    <td class="text-end">$@payroll.EducationalInsurance.ToString("N6")</td>
                 </tr>
                 <tr class="text-danger">
                     <td>(-) Impuesto sobre la Renta (IMPUESTO3)</td>
-                    <td class="text-end">$@payroll.IncomeTax.ToString("N2")</td>
+                    <td class="text-end">$@payroll.IncomeTax.ToString("N6")</td>
                 </tr>
                 <tr class="table-success fw-bold">
                     <td>Salario Neto</td>
-                    <td class="text-end fs-5">$@payroll.Net.ToString("N2")</td>
+                    <td class="text-end fs-5">$@payroll.Net.ToString("N6")</td>
                 </tr>
             </tbody>
         </table>
