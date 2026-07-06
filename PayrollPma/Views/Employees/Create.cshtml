@@ -3,35 +3,43 @@
     ViewData["Title"] = "Crear Empleado";
 }
 
-<h2>Crear Empleado</h2>
+<div class="card card-create">
+    <div class="card-body">
+        <h5 class="card-title mb-4">Nuevo empleado</h5>
 
-<form asp-action="Create" method="post">
-    <div asp-validation-summary="All" class="text-danger"></div>
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
 
-    <div class="mb-3">
-        <label asp-for="Nombre" class="form-label"></label>
-        <input asp-for="Nombre" class="form-control" />
-        <span asp-validation-for="Nombre" class="text-danger"></span>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label asp-for="Nombre" class="form-label"></label>
+                    <input asp-for="Nombre" class="form-control" />
+                    <span asp-validation-for="Nombre" class="small text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Apellido" class="form-label"></label>
+                    <input asp-for="Apellido" class="form-control" />
+                    <span asp-validation-for="Apellido" class="small text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label asp-for="RatePerHour" class="form-label"></label>
+                    <input asp-for="RatePerHour" class="form-control" step="0.01" />
+                    <span asp-validation-for="RatePerHour" class="small text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="MonthlyHours" class="form-label"></label>
+                    <input asp-for="MonthlyHours" class="form-control" step="1" />
+                    <span asp-validation-for="MonthlyHours" class="small text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
     </div>
-
-    <div class="mb-3">
-        <label asp-for="Apellido" class="form-label"></label>
-        <input asp-for="Apellido" class="form-control" />
-        <span asp-validation-for="Apellido" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="RatePerHour" class="form-label"></label>
-        <input asp-for="RatePerHour" class="form-control" />
-        <span asp-validation-for="RatePerHour" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="MonthlyHours" class="form-label"></label>
-        <input asp-for="MonthlyHours" class="form-control" />
-        <span asp-validation-for="MonthlyHours" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-success">Guardar</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-</form>
+</div>
