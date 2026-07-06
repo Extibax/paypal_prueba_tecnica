@@ -13,10 +13,7 @@ public class HomeController : Controller
         _logger = logger;
     }
 
-    public IActionResult Index()
-    {
-        return View();
-    }
+    public IActionResult Index() => RedirectToAction("Index", "Employees");
 
     public IActionResult Privacy()
     {
