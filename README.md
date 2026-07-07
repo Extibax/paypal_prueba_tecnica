@@ -62,27 +62,20 @@ No requiere comandos manuales — el seed corre solo. Para reiniciar con datos l
 
 ## <a name="configurar-tasas"></a>Configurar tasas de impuestos
 
-Las tasas están en `PayrollPma/appsettings.json`, sección `PayrollRates`:
-
 ```json
 "PayrollRates": {
   "SocialSecurityRate": 0.0975,
   "EducationalInsuranceRate": 0.0125,
-  "IncomeTaxIsProgressive": true,
-  "IncomeTaxBrackets": [
-    { "LowerLimit": 0, "UpperLimit": 11000, "Rate": 0 },
-    { "LowerLimit": 11000, "UpperLimit": 50000, "Rate": 0.15 },
-    { "LowerLimit": 50000, "UpperLimit": 999999999, "Rate": 0.25 }
-  ]
+  "IncomeTaxAnnualizationFactor": 13,
+  "IncomeTaxThreshold": 11000,
+  "IncomeTaxRate": 0.15
 }
 ```
 
 | Campo | Impuesto | Descripción |
 |---|---|---|
-| `SocialSecurityRate` | IMPUESTO1 | Seguro Social (CSS empleado) — porcentaje plano |
-| `EducationalInsuranceRate` | IMPUESTO2 | Seguro Educativo — porcentaje plano |
-| `IncomeTaxBrackets` | IMPUESTO3 | ISR — tramos progresivos anuales |
-| `IncomeTaxIsProgressive` | — | `true` = progresivo por tramos, `false` = tasa flat única |
+| `IncomeTaxAnnualizationFactor` | IMPUESTO3 | Factor de anualización del salario bruto |
+| `IncomeTaxThreshold` | IMPUESTO3 | Umbral anual exento |
 
 **Para cambiar país o tasas:** editar el JSON, guardar, reiniciar la app. No tocar código C#.
 
@@ -93,10 +86,10 @@ El cálculo está en `PayrollPma/Payroll/PayrollCalculator.cs`:
 1. **Salario bruto** = `RatePerHour × MonthlyHours`
 2. **IMPUESTO1** (Seguro Social) = `bruto × SocialSecurityRate`
 3. **IMPUESTO2** (Seguro Educativo) = `bruto × EducationalInsuranceRate`
-4. **IMPUESTO3** (ISR) = progresivo por tramos anuales: se anualiza el salario, se calcula por tramos, y se divide entre 12
+4. **IMPUESTO3** (ISR) = `((bruto × 13) − 11000) × 15% / 13` — floor en 0 si negativo
 5. **Salario neto** = `bruto − IMPUESTO1 − IMPUESTO2 − IMPUESTO3`
 
-Todos los valores usan `decimal` (no `double`) para evitar errores de coma flotante en dinero. Redondeo a 2 decimales con `MidpointRounding.AwayFromZero`.
+Todos los valores usan `decimal` (no `double`) para evitar errores de coma flotante en dinero. Redondeo a 6 decimales con `MidpointRounding.AwayFromZero`.
 
 ## <a name="estructura"></a>Estructura del proyecto
 
@@ -113,9 +106,7 @@ PayrollPma/
 │   ├── IPayrollRates.cs        # Interfaz de tasas
 │   ├── PayrollCalculator.cs    # Lógica de cálculo (3 impuestos)
 │   ├── PayrollRates.cs         # Lee tasas desde appsettings.json
-│   ├── MockPayrollRates.cs     # Valores mock alternativos
 │   ├── PayrollResult.cs        # Record con resultado del cálculo
-│   └── TaxBracket.cs           # Record para tramos de ISR
 ├── Services/
 │   └── PdfReportService.cs      # Genera PDF horizontal con QuestPDF
 ├── Views/Employees/
@@ -132,7 +123,7 @@ PayrollPma/
 
 | Ruta | Método | Acción | Descripción |
 |---|---|---|---|
-| `/` | GET | Home/Index | Landing page |
+| `/` | GET | — | Redirige a `/Employees/Index` (sin landing) |
 | `/Employees` | GET | Index | Lista empleados con botones de acción |
 | `/Employees/Create` | GET/POST | Create | Crear nuevo empleado |
 | `/Employees/Edit/{id}` | GET/POST | Edit | Editar empleado existente |
